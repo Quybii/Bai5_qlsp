@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sản phẩm mới | Admin CoreStore</title>
+    <style>
+        /* Card với hiệu ứng Glassmorphism & Shadow sâu */
+        .add-card {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header trang trí với Gradient */
+        .header-accent {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 2.5rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Form styling */
+        .form-label {
+            font-weight: 700;
+            color: #475569;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.6rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.85rem 1.2rem;
+            border-radius: 14px;
+            border: 1.5px solid #f1f5f9;
+            background-color: #f8fafc;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #ffffff;
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Nút bấm Premium */
+        .btn-confirm {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 16px;
+            font-weight: 800;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-confirm:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            filter: brightness(1.05);
+        }
+
+        .input-group-text {
+            background-color: #f1f5f9;
+            border: 1.5px solid #f1f5f9;
+            border-radius: 14px 0 0 14px !important;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="card add-card border-0">
+        <div class="header-accent text-center">
+            <div class="icon-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-fill" viewBox="0 0 16 16">
+                    <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V15H1V4.667h14Zm-9.106-1.334L7.213 1h1.574l1.32 2.333H5.894Z"/>
+                </svg>
+            </div>
+            <h3 class="fw-800 text-dark mb-1" style="letter-spacing: -1px;">Khởi tạo sản phẩm</h3>
+            <p class="text-muted small fw-500">Thêm mặt hàng mới vào hệ thống lưu trữ CORE<span>STORE</span></p>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            <form th:action="@{/products/save}" th:object="${product}" method="post">
+                
+                <div class="mb-4">
+                    <label for="name" class="form-label">Tên định danh sản phẩm</label>
+                    <input class="form-control" type="text" th:field="*{name}" id="name" 
+                           placeholder="Nhập tên sản phẩm chính xác..." required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="image" class="form-label">Tài nguyên hình ảnh (URL)</label>
+                    <div class="input-group">
+                        <span class="input-group-text border-end-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                            </svg>
+                        </span>
+                        <input class="form-control border-start-0" type="text" th:field="*{image}" id="image" 
+                               style="border-radius: 0 14px 14px 0;"
+                               placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-text text-muted" style="font-size: 0.75rem;">Đường dẫn URL ảnh công khai sẽ hiển thị ngay trên Dashboard.</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="price" class="form-label">Giá niêm yết</label>
+                        <div class="input-group">
+                            <input class="form-control" type="number" th:field="*{price}" id="price" 
+                                   placeholder="0" required>
+                            <span class="input-group-text bg-white border-start-0 fw-bold" style="border-radius: 0 14px 14px 0 !important; color: #1e293b;">₫</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label for="category" class="form-label">Phân loại kho</label>
+                        <select th:field="*{category}" class="form-select" id="category">
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.id}" 
+                                    th:text="${category.name}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between mt-5 pt-3 border-top">
+                    <a th:href="@{/products}" class="text-muted fw-600 text-decoration-none small transition-all">
+                        <span class="me-1">&larr;</span> Quay về Dashboard
+                    </a>
+                    <button type="submit" class="btn btn-confirm px-5 shadow-sm">
+                        Hoàn tất & Lưu kho
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
